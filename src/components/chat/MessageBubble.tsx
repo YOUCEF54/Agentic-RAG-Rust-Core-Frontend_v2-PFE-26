@@ -3,6 +3,8 @@
 import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { User, Bot, Loader2 } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { AgentTrace } from "./AgentTrace";
 import { SourceCitations } from "./SourceCitations";
 import { EvaluationBadge } from "./EvaluationBadge";
@@ -88,8 +90,12 @@ export function MessageBubble({ message }: MessageBubbleProps) {
               <span className="text-xs font-mono">PROCESSING...</span>
             </div>
           ) : (
-            <div className="whitespace-pre-wrap break-words">
-              {message.content || (
+            <div className="prose prose-sm dark:prose-invert max-w-none prose-p:leading-relaxed prose-pre:bg-foreground/[0.03] prose-pre:border prose-pre:border-foreground/[0.06] prose-pre:rounded-none prose-code:font-mono prose-code:bg-foreground/[0.04] prose-code:px-1.5 prose-code:py-0.5 prose-headings:font-mono prose-headings:uppercase prose-a:text-emerald-500 hover:prose-a:text-emerald-400 break-words">
+              {message.content ? (
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {message.content}
+                </ReactMarkdown>
+              ) : (
                 <span className="text-foreground/25 italic">No response generated</span>
               )}
             </div>
