@@ -85,7 +85,8 @@ export function MessageBubble({ message, isDevMode = false }: MessageBubbleProps
             }
           `}
         >
-          {message.isStreaming && !message.content ? (
+          {/* {message.isStreaming && !message.content ? ( */}
+          {message.isStreaming ? (
             <div className="flex items-center gap-2 text-foreground/40">
               <Loader2 className="h-3.5 w-3.5 animate-spin" />
               <span className="text-xs font-mono">PROCESSING...</span>

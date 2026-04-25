@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Cpu, Loader2, Play, AlertCircle } from "lucide-react";
 import { useHardware } from "@/hooks/useHardware";
+import { Tooltip } from "@base-ui/react";
 
 export function HardwareSettings() {
   const hardware = useHardware();
@@ -58,7 +59,7 @@ export function HardwareSettings() {
         )}
 
         {hardware.lastCalibration?.hardware_calibration && (
-          <div className="mt-2 pt-2 border-t border-foreground/[0.06] flex flex-col gap-1.5">
+          <div className="mt-2 pt-2 border-t border-foreground/6 flex flex-col gap-1.5">
             <span className="text-[9px] font-mono text-foreground/40 uppercase tracking-widest">Last Result</span>
             <div className="flex justify-between items-center text-[10px] font-mono">
               <span className="text-foreground/50">Optimal Batch Size:</span>
@@ -68,6 +69,12 @@ export function HardwareSettings() {
               <span className="text-foreground/50">Throughput:</span>
               <span className="text-foreground/80">
                 {Number(hardware.lastCalibration.hardware_calibration.throughput_measured).toFixed(2)} items/s
+              </span>
+            </div>
+            <div className=" text-[10px] font-mono bg-amber-500/30k kp-1 rounded-md ">
+              <span className="text-foreground/50">stop reason:</span>
+              <span className="text-foreground/80 line-clamp-2  hover:line-clamp-none transition-all duration-300">
+                {(hardware.lastCalibration.hardware_calibration.stop_reason as String).replace("max_runtime_seconds=25.0s", "maximum runtime of 25.0 seconds")} 
               </span>
             </div>
           </div>
