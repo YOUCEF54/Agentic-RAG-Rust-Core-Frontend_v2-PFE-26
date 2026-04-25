@@ -11,9 +11,11 @@ interface StatusBarProps {
   health: HealthResponse | null;
   isOnline: boolean;
   indexStatus: IndexStatusResponse | null;
+  isDevMode: boolean;
+  onDevModeChange: (isDevMode: boolean) => void;
 }
 
-export function StatusBar({ health, isOnline, indexStatus }: StatusBarProps) {
+export function StatusBar({ health, isOnline, indexStatus, isDevMode, onDevModeChange }: StatusBarProps) {
   const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = React.useState(false);
 
@@ -61,6 +63,23 @@ export function StatusBar({ health, isOnline, indexStatus }: StatusBarProps) {
             </span>
           </div>
         )}
+
+        {/* Dev Mode Toggle */}
+        <div className="flex items-center gap-1.5 ml-2 border-l border-foreground/[0.08] pl-3">
+          <span className={`text-[10px] font-mono uppercase ${isDevMode ? "text-emerald-400" : "text-foreground/30"}`}>
+            DEV
+          </span>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-6 w-8 text-foreground/40 hover:text-foreground/80 hover:bg-foreground/5 relative"
+            onClick={() => onDevModeChange(!isDevMode)}
+          >
+            <div className={`w-6 h-3 rounded-full border transition-colors ${isDevMode ? "border-emerald-500/50 bg-emerald-500/10" : "border-foreground/20 bg-foreground/5"}`}>
+              <div className={`h-2 w-2 rounded-full mt-[1px] transition-all ${isDevMode ? "ml-[13px] bg-emerald-400" : "ml-[1px] bg-foreground/30"}`} />
+            </div>
+          </Button>
+        </div>
 
         {/* Theme Toggle */}
         <Button

@@ -6,6 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { DocumentManager } from "./DocumentManager";
 import { IndexControls } from "./IndexControls";
 import { QuerySettingsPanel } from "./QuerySettings";
+import { HardwareSettings } from "./HardwareSettings";
 import type { DocumentMeta, IndexStatusResponse, IndexBuildInfo, QuerySettings } from "@/lib/types";
 
 interface SidebarProps {
@@ -80,6 +81,10 @@ export function Sidebar({
             needsReindex={needsReindex}
             onBuild={onBuildIndex}
           />
+
+          <Separator className="my-3 bg-foreground/[0.08]" />
+
+          <HardwareSettings />
 
           <Separator className="my-3 bg-foreground/[0.08]" />
 

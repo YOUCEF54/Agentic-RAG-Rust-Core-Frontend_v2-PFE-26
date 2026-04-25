@@ -37,29 +37,7 @@ export function QuerySettingsPanel({
         Query Settings
       </h3>
 
-      {/* Mode */}
-      <div className="flex flex-col gap-1.5">
-        <label className="text-[10px] font-mono uppercase text-foreground/40 tracking-wide">
-          Pipeline Mode
-        </label>
-        <Select
-          value={settings.mode}
-          onValueChange={(v) => update("mode", v as "agentic" | "naive")}
-          disabled={disabled}
-        >
-          <SelectTrigger className="h-8 text-xs font-mono">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="agentic" className="text-xs font-mono">
-              AGENTIC
-            </SelectItem>
-            <SelectItem value="naive" className="text-xs font-mono">
-              NAIVE
-            </SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+
 
       {/* Use LLM toggle */}
       <div className="flex items-center justify-between">
@@ -93,8 +71,7 @@ export function QuerySettingsPanel({
         />
       </div>
 
-      {/* Min Score (agentic only) */}
-      {settings.mode === "agentic" && (
+      {/* Min Score */}
         <div className="flex flex-col gap-1.5">
           <div className="flex items-center justify-between">
             <label className="text-[10px] font-mono uppercase text-foreground/40 tracking-wide">
@@ -113,10 +90,9 @@ export function QuerySettingsPanel({
             disabled={disabled}
           />
         </div>
-      )}
 
-      {/* Max Attempts (agentic only) */}
-      {settings.mode === "agentic" && (
+
+      {/* Max Attempts */}
         <div className="flex flex-col gap-1.5">
           <div className="flex items-center justify-between">
             <label className="text-[10px] font-mono uppercase text-foreground/40 tracking-wide">
@@ -135,7 +111,7 @@ export function QuerySettingsPanel({
             disabled={disabled}
           />
         </div>
-      )}
+
 
       {/* Return Trace toggle */}
       <div className="flex items-center justify-between">
@@ -149,23 +125,7 @@ export function QuerySettingsPanel({
         />
       </div>
 
-      {/* Model Override */}
-      {settings.mode === "naive" && (
-        <div className="flex flex-col gap-1.5">
-          <label className="text-[10px] font-mono uppercase text-foreground/40 tracking-wide">
-            Model Override
-          </label>
-          <Input
-            value={settings.chat_model ?? ""}
-            onChange={(e) =>
-              update("chat_model", e.target.value || null)
-            }
-            placeholder="default"
-            className="h-8 text-xs font-mono"
-            disabled={disabled}
-          />
-        </div>
-      )}
+
     </div>
   );
 }

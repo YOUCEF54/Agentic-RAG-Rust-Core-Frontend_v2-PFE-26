@@ -12,6 +12,7 @@ import { Brain, ChevronRight, Search, Sparkles, CheckCircle, RefreshCw } from "l
 interface AgentTraceProps {
   trace: Record<string, unknown>[];
   isStreaming?: boolean;
+  isDevMode?: boolean;
 }
 
 function getStepIcon(step: Record<string, unknown>) {
@@ -30,8 +31,34 @@ function getStepLabel(step: Record<string, unknown>): string {
   );
 }
 
-export function AgentTrace({ trace, isStreaming }: AgentTraceProps) {
+export function AgentTrace({ trace, isStreaming, isDevMode = false }: AgentTraceProps) {
   if (!trace || trace.length === 0) return null;
+
+  if (!isDevMode) {
+    return (
+      <div className="flex flex-col gap-2 p-3 bg-foreground/[0.02] border border-foreground/[0.06]">
+        <div className="flex items-center gap-2 mb-1">
+          <Brain className="h-3.5 w-3.5 text-foreground/40" />
+          <span className="text-[10px] font-mono uppercase text-foreground/50 tracking-wider">
+            Thinking Process
+          </span>
+          {isStreaming && (
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse ml-1" />
+          )}
+        </div>
+        <div className="flex flex-col gap-2 ml-1.5 border-l-2 border-foreground/[0.06] pl-3 py-1">
+          {trace.map((step, i) => (
+            <div key={i} className="flex items-center gap-2">
+              <div className="text-emerald-500/70">{getStepIcon(step)}</div>
+              <span className="text-[11px] font-mono text-foreground/70 uppercase">
+                {getStepLabel(step)}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <Collapsible>

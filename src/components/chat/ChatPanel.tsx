@@ -14,6 +14,7 @@ interface ChatPanelProps {
   streamState: StreamState;
   isStreaming: boolean;
   indexReady: boolean;
+  isDevMode: boolean;
   onSend: (message: string) => void;
   onCancel: () => void;
   onClear: () => void;
@@ -34,6 +35,7 @@ export function ChatPanel({
   streamState,
   isStreaming,
   indexReady,
+  isDevMode,
   onSend,
   onCancel,
   onClear,
@@ -120,7 +122,7 @@ export function ChatPanel({
             </div>
           )}
           {messages.map((msg) => (
-            <MessageBubble key={msg.id} message={msg} />
+            <MessageBubble key={msg.id} message={msg} isDevMode={isDevMode} />
           ))}
           <div ref={bottomRef} />
         </div>

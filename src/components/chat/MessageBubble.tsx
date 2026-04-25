@@ -12,9 +12,10 @@ import type { ChatMessage } from "@/lib/types";
 
 interface MessageBubbleProps {
   message: ChatMessage;
+  isDevMode?: boolean;
 }
 
-export function MessageBubble({ message }: MessageBubbleProps) {
+export function MessageBubble({ message, isDevMode = false }: MessageBubbleProps) {
   const isUser = message.role === "user";
 
   return (
@@ -106,11 +107,13 @@ export function MessageBubble({ message }: MessageBubbleProps) {
         {!isUser && (
           <div className="flex flex-col gap-2 w-full">
             {/* Evaluation */}
-            <EvaluationBadge
-              evaluation={message.evaluation ?? null}
-              score={message.score}
-              attempts={message.attempts}
-            />
+            {isDevMode && (
+              <EvaluationBadge
+                evaluation={message.evaluation ?? null}
+                score={message.score}
+                attempts={message.attempts}
+              />
+            )}
 
             {/* Refined query */}
             {message.refined_query && (
@@ -124,6 +127,7 @@ export function MessageBubble({ message }: MessageBubbleProps) {
             <AgentTrace
               trace={message.trace ?? []}
               isStreaming={message.isStreaming}
+              isDevMode={isDevMode}
             />
 
             {/* Sources */}

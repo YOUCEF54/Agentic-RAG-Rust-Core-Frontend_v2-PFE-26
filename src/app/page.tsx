@@ -15,6 +15,9 @@ export default function HomePage() {
   const index = useIndex();
   const chat = useChat();
 
+  // Developer Mode
+  const [isDevMode, setIsDevMode] = useState(false);
+
   // Resizable layout
   const [sidebarWidth, setSidebarWidth] = useState(340);
   const isDragging = useRef(false);
@@ -70,35 +73,39 @@ export default function HomePage() {
     <div className="h-screen flex flex-col overflow-hidden bg-background">
       {/* Main body */}
       <div ref={containerRef} className="flex flex-1 overflow-hidden">
-        {/* Sidebar */}
-        <div
-          style={{ width: sidebarWidth, minWidth: sidebarWidth }}
-          className="shrink-0 h-full overflow-hidden"
-        >
-          <Sidebar
-            documents={docs.documents}
-            isUploading={docs.isUploading}
-            isDeleting={docs.isDeleting}
-            docError={docs.error}
-            onUpload={docs.upload}
-            onDelete={docs.remove}
-            indexStatus={index.status}
-            isBuilding={index.isBuilding}
-            lastBuild={index.lastBuild}
-            indexError={index.error}
-            needsReindex={docs.needsReindex}
-            onBuildIndex={handleBuild}
-            settings={chat.settings}
-            onSettingsChange={chat.setSettings}
-            isStreaming={chat.isStreaming}
-          />
-        </div>
+        {/* Sidebar (Dev Mode Only) */}
+        {isDevMode && (
+          <>
+            <div
+              style={{ width: sidebarWidth, minWidth: sidebarWidth }}
+              className="shrink-0 h-full overflow-hidden"
+            >
+              <Sidebar
+                documents={docs.documents}
+                isUploading={docs.isUploading}
+                isDeleting={docs.isDeleting}
+                docError={docs.error}
+                onUpload={docs.upload}
+                onDelete={docs.remove}
+                indexStatus={index.status}
+                isBuilding={index.isBuilding}
+                lastBuild={index.lastBuild}
+                indexError={index.error}
+                needsReindex={docs.needsReindex}
+                onBuildIndex={handleBuild}
+                settings={chat.settings}
+                onSettingsChange={chat.setSettings}
+                isStreaming={chat.isStreaming}
+              />
+            </div>
 
-        {/* Resizer */}
-        <div
-          onMouseDown={onMouseDown}
-          className="w-[3px] cursor-col-resize hover:bg-foreground/[0.15] active:bg-foreground/[0.25] transition-colors shrink-0"
-        />
+            {/* Resizer */}
+            <div
+              onMouseDown={onMouseDown}
+              className="w-[3px] cursor-col-resize hover:bg-foreground/[0.15] active:bg-foreground/[0.25] transition-colors shrink-0"
+            />
+          </>
+        )}
 
         {/* Chat Panel */}
         <div className="flex-1 min-w-0 h-full overflow-hidden">
@@ -107,6 +114,7 @@ export default function HomePage() {
             streamState={chat.streamState}
             isStreaming={chat.isStreaming}
             indexReady={indexReady}
+            isDevMode={isDevMode}
             onSend={chat.sendQuery}
             onCancel={chat.cancelStream}
             onClear={chat.clearChat}
@@ -119,6 +127,8 @@ export default function HomePage() {
         health={health.health}
         isOnline={health.isOnline}
         indexStatus={index.status}
+        isDevMode={isDevMode}
+        onDevModeChange={setIsDevMode}
       />
     </div>
   );

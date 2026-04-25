@@ -19,7 +19,7 @@ interface IndexControlsProps {
   lastBuild: IndexBuildInfo | null;
   error: string | null;
   needsReindex: boolean;
-  onBuild: () => void;
+  onBuild: (opts?: { rebuild: boolean; run_hardware_test?: boolean }) => void;
 }
 
 const STATUS_CONFIG: Record<
@@ -61,6 +61,7 @@ export function IndexControls({
   needsReindex,
   onBuild,
 }: IndexControlsProps) {
+  const [calibrateIndex, setCalibrateIndex] = React.useState(false);
   const statusKey = status?.status ?? "idle";
   const config = STATUS_CONFIG[statusKey] ?? STATUS_CONFIG.idle;
 
@@ -132,23 +133,35 @@ export function IndexControls({
         </div>
       )}
 
-      <Button
-        onClick={onBuild}
-        disabled={isBuilding}
-        className="w-full font-mono uppercase tracking-[1.4px] text-xs h-9"
-      >
-        {isBuilding ? (
-          <>
-            <Loader2 className="h-3.5 w-3.5 mr-2 animate-spin" />
-            BUILDING INDEX...
-          </>
-        ) : (
-          <>
-            <Database className="h-3.5 w-3.5 mr-2" />
-            {needsReindex ? "REBUILD INDEX" : "BUILD INDEX"}
-          </>
-        )}
-      </Button>
+      <div className="flex flex-col gap-2 mt-2">
+        <label className="text-[10px] font-mono uppercase text-foreground/40 tracking-wide cursor-pointer flex items-center gap-2">
+          <input 
+            type="checkbox" 
+            checked={calibrateIndex} 
+            onChange={(e) => setCalibrateIndex(e.target.checked)}
+            className="accent-emerald-500 h-3 w-3"
+            disabled={isBuilding}
+          />
+          Calibrate before indexing
+        </label>
+        <Button
+          onClick={() => onBuild({ rebuild: true, run_hardware_test: calibrateIndex })}
+          disabled={isBuilding}
+          className="w-full font-mono uppercase tracking-[1.4px] text-xs h-9"
+        >
+          {isBuilding ? (
+            <>
+              <Loader2 className="h-3.5 w-3.5 mr-2 animate-spin" />
+              BUILDING INDEX...
+            </>
+          ) : (
+            <>
+              <Database className="h-3.5 w-3.5 mr-2" />
+              {needsReindex ? "REBUILD INDEX" : "BUILD INDEX"}
+            </>
+          )}
+        </Button>
+      </div>
 
       {lastBuild && (
         <div className="text-[10px] font-mono text-foreground/25">
